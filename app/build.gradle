@@ -27,4 +27,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:9.4.0'
     // Added for jokelib
     compile project(':jokelib')
+    // Added for jokedisplay
+    compile project(':jokedisplay')
 }

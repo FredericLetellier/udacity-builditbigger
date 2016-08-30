@@ -10,7 +10,8 @@
     tools:context="com.joke.JokeActivity">
 
     <TextView
+        android:id="@+id/joke_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="@string/missing_joke"/>
 </RelativeLayout>
