@@ -29,4 +29,6 @@ dependencies {
     compile project(':jokelib')
     // Added for jokedisplay
     compile project(':jokedisplay')
+    // Added for google cloud endpoint backend
+    compile project(path: ':backend', configuration: 'android-endpoints')
 }
