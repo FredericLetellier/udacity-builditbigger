@@ -25,14 +25,9 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... params){
-        if(myApiService == null) {  // Only do this once
-            MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
-                    new AndroidJsonFactory(), null)
-                    // options for running against local devappserver
-                    // - set to test on a physical device with a local development server
-                    // (to get your ip address, go to cmd -> ipconfig -> IPV4 address with port number)
-                    .setRootUrl("http://192.168.43.170:8080/_ah/api/");
-            // end options for devappserver
+        if(myApiService == null) {
+            MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                    .setRootUrl("https://builditbigger-140415.appspot.com/_ah/api/");
 
             myApiService = builder.build();
         }
