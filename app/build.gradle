@@ -14,6 +14,14 @@ android {
         //To set AndroidJUnitRunner as the default test instrumentation runner
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    productFlavors {
+        free {
+            applicationId "com.udacity.gradle.builditbigger.free"
+        }
+        paid {
+            applicationId "com.udacity.gradle.builditbigger"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -26,7 +34,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:24.1.1'
     // Added for AdMob
-    compile 'com.google.android.gms:play-services-ads:9.4.0'
+    freeCompile 'com.google.android.gms:play-services-ads:9.4.0'
     // Added for jokedisplay
     compile project(':jokedisplay')
     // Added for google cloud endpoint backend
