@@ -23,6 +23,8 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted{
     InterstitialAd mInterstitialAd;
     Button mJokeButton;
     ProgressBar mProgressBar;
+    String mResult;
+    Boolean mAdsOnScreen;
 
     public MainActivityFragment() {
     }
@@ -54,7 +56,8 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted{
             @Override
             public void onAdClosed() {
                 requestNewInterstitial();
-                loadData();
+                mAdsOnScreen = false;
+                launchActivity();
             }
         });
 
@@ -65,10 +68,14 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted{
             public void onClick(View v) {
                 // Display the interstitial ad
                 if (mInterstitialAd.isLoaded()) {
+                    mAdsOnScreen = true;
                     mInterstitialAd.show();
                 } else {
-                    loadData();
+                    mAdsOnScreen = false;
                 }
+
+                loadData();
+                launchActivity();
             }
         });
 
@@ -76,20 +83,35 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted{
     }
 
     public void loadData() {
-        mProgressBar.setVisibility(View.VISIBLE);
-
+        mResult = null;
         EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(this);
         endpointsAsyncTask.execute();
     }
 
     @Override
     public void onTaskCompleted(String result) {
-        Intent intent = new Intent(getActivity(), JokeActivity.class);
-        intent.putExtra(JokeActivity.JOKE_KEY, result);
+        mResult = result;
+        launchActivity();
+    }
 
-        mProgressBar.setVisibility(View.GONE);
-
-        startActivity(intent);
+    // Call three times :
+    // - when the user click (-> progressBar or nothing)
+    // - when the data is loaded (-> intent or nothing)
+    // - when the ads is closed (-> intent or progressBar)
+    public void launchActivity() {
+        // No ads currently displayed
+        if (!mAdsOnScreen){
+            // Data is ready
+            if (mResult != null) {
+                Intent intent = new Intent(getActivity(), JokeActivity.class);
+                intent.putExtra(JokeActivity.JOKE_KEY, mResult);
+                mProgressBar.setVisibility(View.GONE);
+                startActivity(intent);
+            // AsyncTask is not finish
+            } else {
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     // Request new interstitial
