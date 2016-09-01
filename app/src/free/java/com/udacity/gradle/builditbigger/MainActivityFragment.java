@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -21,6 +22,7 @@ import com.joke.JokeActivity;
 public class MainActivityFragment extends Fragment implements OnTaskCompleted{
     InterstitialAd mInterstitialAd;
     Button mJokeButton;
+    ProgressBar mProgressBar;
 
     public MainActivityFragment() {
     }
@@ -31,6 +33,8 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted{
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
         mJokeButton = (Button) root.findViewById(R.id.btn_joke);
+
+        mProgressBar = (ProgressBar) root.findViewById(R.id.progressBar);
 
         AdView mAdView = (AdView) root.findViewById(R.id.adView);
         // Create an ad request. Check logcat output for the hashed device ID to
@@ -72,6 +76,8 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted{
     }
 
     public void loadData() {
+        mProgressBar.setVisibility(View.VISIBLE);
+
         EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask(this);
         endpointsAsyncTask.execute();
     }
@@ -79,8 +85,10 @@ public class MainActivityFragment extends Fragment implements OnTaskCompleted{
     @Override
     public void onTaskCompleted(String result) {
         Intent intent = new Intent(getActivity(), JokeActivity.class);
-
         intent.putExtra(JokeActivity.JOKE_KEY, result);
+
+        mProgressBar.setVisibility(View.GONE);
+
         startActivity(intent);
     }
 
