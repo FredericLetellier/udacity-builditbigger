@@ -1,12 +1,9 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.joke.JokeActivity;
 import com.joke.endpoint.backend.myApi.MyApi;
 
 import java.io.IOException;
@@ -17,10 +14,10 @@ import java.io.IOException;
  */
 public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     private static MyApi myApiService = null;
-    private final Context mContext;
+    private OnTaskCompleted mListener;
 
-    public EndpointsAsyncTask (Context context){
-        mContext = context;
+    public EndpointsAsyncTask (OnTaskCompleted listener) {
+        this.mListener = listener;
     }
 
     @Override
@@ -42,9 +39,6 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
 
-        Intent intent = new Intent(mContext, JokeActivity.class);
-
-        intent.putExtra(JokeActivity.JOKE_KEY, result);
-        mContext.startActivity(intent);
+        mListener.onTaskCompleted(result);
     }
 }
